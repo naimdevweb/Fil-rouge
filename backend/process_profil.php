@@ -11,25 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo_url'])) {
     $description_longue = $_POST['description_longue']; 
     $prix = $_POST['prix']; 
     $etat = $_POST['etat']; 
-    $genre = $_POST['genre']; 
+    $genre = $_POST['genre_id']; 
     $photo = $_FILES['photo_url']; 
 
 
-    var_dump($photo);
-    var_dump($prix);
-    var_dump($etat);
-    var_dump($titre);
-    var_dump($description_courte);
-    var_dump($description_longue);
-    var_dump($id_seller);
-    die();
     
     // Vérifier si l'image a bien été téléchargée
     if ($photo['error'] === UPLOAD_ERR_OK) {
         
         // Dossier de téléchargement
-        $uploadDir = '../../assets/images/'; 
-        $fileName = uniqid() . basename($photo['name']); // Crée un nom unique
+        $uploadDir = '../assets/images/'; 
+        $fileName = uniqid() . basename($photo['name']); 
         $uploadPath = $uploadDir . $fileName; 
         
         // Déplacer le fichier dans le dossier de destination
@@ -37,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo_url'])) {
             $url_photo = $uploadPath; // URL de l'image
 
             try {
-                // Insertion dans la base de données
+                
                 $sql = "INSERT INTO livre (id_seller, titre, description_courte, description_longue, prix, etat_id, genre_id, photo_url) 
-                        VALUES (:id_seller, :titre, :description_courte, :description_longue, :prix, :etat_id, :genre_id, :photo_url)";
+                  VALUES (:id_seller, :titre, :description_courte, :description_longue, :prix, :etat_id, :genre_id, :photo_url)";
                 
                 $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':id_seller', $id_seller, PDO::PARAM_INT); // ID du vendeur
+                $stmt->bindParam(':id_seller', $id_seller, PDO::PARAM_INT); 
                 $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
                 $stmt->bindParam(':description_courte', $description_courte, PDO::PARAM_STR);
                 $stmt->bindParam(':description_longue', $description_longue, PDO::PARAM_STR);
@@ -69,8 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo_url'])) {
     } else {
         $_SESSION['error_message'] = "Erreur d'upload d'image.";
     }
+}
     
     // Redirection après l'ajout
     header('Location: ../frontend/public/profil.php');
     exit;
-}
+
+
+
+
+
+    

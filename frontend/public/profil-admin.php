@@ -30,7 +30,7 @@ require_once '../../db/connect_db.php'; // Connexion à la base de données
 
 // Vérifiez si l'utilisateur est connecté et a le rôle administrateur
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
-    header("Location: /login.php"); // Redirige vers la page de connexion si l'utilisateur n'est pas un administrateur
+    header("Location: ./connexion.php"); // Redirige vers la page de connexion si l'utilisateur n'est pas un administrateur
     exit();
 }
 
