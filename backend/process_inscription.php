@@ -5,12 +5,27 @@ require_once '../db/connect_db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+
+    if ($_POST['role'] == 2) {
+        if (!isset($_POST['adresse_entreprise']) || empty(trim($_POST['adresse_entreprise'])) ||
+         !isset($_POST['nom_entreprise']) || empty(trim($_POST['nom_entreprise']))) {
+            echo "L'adresse et le nom de l'entreprise sont requis.";
+            exit;
+        }
+    }
+
   
     $email = htmlspecialchars(trim($_POST['user_email']));
     $nom = htmlspecialchars(trim($_POST['user_nom']));
     $prenom = htmlspecialchars(trim($_POST['user_prenom']));
     $tel = htmlspecialchars(trim($_POST['user_tel']));
+    $role = htmlspecialchars(trim($_POST['role']));
     $password = trim($_POST['user_mdp']);
+
+
+    
+
+
 
     // Vérification que tous les champs sont remplis
     if (empty($email) || empty($nom) || empty($prenom) || empty($tel) || empty($password)) {
@@ -38,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insertion dans la base de données
-        $sql = "INSERT INTO users (user_email, user_nom, user_prenom, user_tel,  user_mdp,role) 
+        $sql = "INSERT INTO users (user_email, user_nom, user_prenom, user_tel,  user_mdp,role_id) 
                 VALUES (:email, :nom, :prenom, :tel,  :password,:role)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -53,11 +68,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Récupération de l'ID de l'utilisateur et mise en session
         $_SESSION["user"] = $nom;
+        $_SESSION["user_prenom"] = $prenom;
         $_SESSION["user_id"] = $pdo->lastInsertId();
 
-        // Redirection après l'inscription
-        header("Location: ../index.php");
-        exit;
+
+
+
+        if ($role == 2) {
+            $adresse_entreprise = htmlspecialchars(trim($_POST['adresse_entreprise']));
+            $nom_entreprise = htmlspecialchars(trim($_POST['nom_entreprise']));
+    
+            $sql = "INSERT INTO vendeur (user_id, adresse_entreprise, nom_entreprise) VALUES (:user_id, :adresse_entreprise, :nom_entreprise)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':user_id' => $pdo->lastInsertId(),
+            ':adresse_entreprise' => $adresse_entreprise,
+            ':nom_entreprise' => $nom_entreprise]);
+        }
+
+        
 
     } catch (PDOException $error) {
         $_SESSION["erreur"] = "Erreur lors de la requête : " . $error->getMessage();
@@ -66,4 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 }
+
+
+
+// Redirection après l'inscription
+header("Location: ../index.php");
+exit;
 ?>

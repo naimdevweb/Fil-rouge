@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+   
     <!-- header.php -->
 <header class="bg-white text-black p-4 shadow-md">
     <div class="flex justify-between items-center">
@@ -23,10 +24,10 @@
         </div>
 
         <nav class="flex space-x-6">
-            <a href="/compte" class="hover:text-gray-200">Compte</a>
+            <a href="/frontend/public/profil.php" class="hover:text-red-600">Compte</a>
             <a href="/filtres" class="hover:text-gray-200">Filtres</a>
-            <a href="/livres" class="hover:text-gray-200">Livres</a>
-            <a href="/shop" class="hover:text-gray-200">Shop</a>
+            <a href="../../index.php" class="hover:text-gray-200">Livres</a>
+            <a href="#" class="hover:text-gray-200">Shop</a>
         </nav>
 
     </div>

@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer un Compte</title>
     <link rel="stylesheet" href="../../assets/css/output.css">
+    <script type="module" src="../../assets/js/script.js" defer></script>
 </head>
 <body class="bg-gray-100  flex items-center justify-center">
+
 <main>
 <?php
-        session_start();
-        
-        if (isset($_SESSION["erreur"])) {
-            echo "<p class='text-center text-off-red'>" . $_SESSION["erreur"] . "</p>";
-            unset($_SESSION["erreur"]);
-            session_destroy();
-        } 
-        ?>
+    session_start();
+    
+    if (isset($_SESSION["erreur"])) {
+        echo "<p class='text-center text-off-red'>" . $_SESSION["erreur"] . "</p>";
+        unset($_SESSION["erreur"]);
+        session_destroy();
+    } 
+?>
+
     <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
-        <!-- Ajouter un espacement plus important pour le titre -->
         <h2 class="text-2xl font-semibold text-center mt-10 mb-4">Inscription</h2>
         
         <form action="../../backend/process_inscription.php" method="post">
@@ -46,16 +48,30 @@
                        class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- Nouveau champ de sélection pour Professionnel ou Utilisateur -->
+            <!-- Sélection du rôle (Client ou Professionnel) -->
             <div class="mb-4">
-                <label for="typeCompte" class="block text-sm font-medium text-gray-700">Choisissez votre type de compte</label>
-                <select name="typeCompte" id="typeCompte" required
+                <label for="role" class="block text-sm font-medium text-gray-700">Vous êtes un</label>
+                <select name="role" id="role" 
                         class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="utilisateur">Utilisateur</option>
-                    <option value="professionnel">Professionnel</option>
+                    <option value="1">Client</option>
+                    <option value="2">Professionnel</option>
                 </select>
             </div>
 
+            <!-- Formulaire pour les professionnels (masqué par défaut) -->
+            <div id="professionnelForm" class="hidden mt-4">
+                <label for="adresse_entreprise" class="block text-sm font-medium text-gray-700">L'adresse de votre entreprise</label>
+                <input type="text" name="adresse_entreprise" id="adresse_entreprise"
+                       placeholder="L'adresse de votre entreprise"
+                       class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                <label for="nom_entreprise" class="block text-sm font-medium text-gray-700 mt-4">Le nom de votre entreprise</label>
+                <input type="text" name="nom_entreprise" id="nom_entreprise"
+                       placeholder="Le nom de votre entreprise"
+                       class="mt-2 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Mot de passe -->
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Vôtre mot de passe</label>
                 <input type="password" name="user_mdp" id="user_mdp" placeholder="Vôtre Mot de Passe" required 
@@ -70,6 +86,8 @@
         </div>
     </div>
 </main>
+
+
 
 </body>
 </html>
