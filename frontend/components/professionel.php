@@ -99,8 +99,8 @@
                 <div class="bg-gray-100 rounded-lg p-4 shadow">
                     <img src="../../assets/images/<?= htmlspecialchars($livre->getPhotoUrl()); ?>" alt="<?= htmlspecialchars($livre->getTitre()); ?>" class="flex-wrap h-48">
                     <h3 class="text-lg font-semibold mt-2"><?= htmlspecialchars($livre->getTitre()); ?></h3>
-                    <p class="text-gray-600"><?= htmlspecialchars($livre->getDescription_courte()); ?></p>
-                    <p class="text-gray-600"><?= htmlspecialchars($livre->getDescription_longue()); ?></p>
+                    <p class="text-gray-600"><?= htmlspecialchars($livre->getDescriptionCourte()); ?></p>
+                    <p class="text-gray-600"><?= htmlspecialchars($livre->getDescriptionLongue()); ?></p>
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getPrix()); ?> €</p>
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getEtat()); ?></p>
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getGenreNom()); ?></p>

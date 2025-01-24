@@ -9,8 +9,10 @@ class Book {
     private string $photo_url;
     private string $seller_nom;
     private string $seller_prenom;
+    private string $etat;
+    private string $genre;
 
-    public function __construct(int $id, string $titre, string $description_courte, string $description_longue, float $prix, string $photo_url, string $seller_nom, string $seller_prenom) {
+    public function __construct(int $id, string $titre, string $description_courte, string $description_longue, float $prix, string $photo_url, string $seller_nom, string $seller_prenom, string $etat, string $genre) {
         $this->id = $id;
         $this->titre = $titre;
         $this->description_courte = $description_courte;
@@ -19,6 +21,8 @@ class Book {
         $this->photo_url = $photo_url;
         $this->seller_nom = $seller_nom;
         $this->seller_prenom = $seller_prenom;
+        $this->etat = $etat;
+        $this->genre = $genre;
     }
 
     public function getId(): int {
@@ -51,5 +55,13 @@ class Book {
 
     public function getSellerPrenom(): string {
         return $this->seller_prenom;
+    }
+
+    public function getEtat(): string {
+        return $this->etat;
+    }
+
+    public function getGenre(): string {
+        return $this->genre;
     }
 }
