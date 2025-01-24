@@ -1,14 +1,20 @@
 <?php
 // Démarrer la session
+require_once './utils/autoload.php'; 
 session_start();
-require_once './db/connect_db.php'; 
 
-// Requête SQL pour récupérer tous les livres
-$sql = "SELECT l.photo_url, l.titre, l.description_courte, l.id
-        FROM livre l";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$livres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$bookRepo = new BookRepository();
+$livres = $bookRepo->getBooks();
+
+
+if (isset($_SESSION['user'])) {
+    $user_prenom = $_SESSION['user']->getPrenom();
+   
+} else {
+    $user_prenom = "Inconnu"; 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -38,14 +44,15 @@ $livres = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($livres as $livre): ?>
             <div class="max-w-xs w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
     
-    <img src="<?= "./uploads/" . htmlspecialchars($livre['photo_url']) ?>" alt="livre" class="w-full object-cover h-48">
+            <img src="./assets/images/<?= htmlspecialchars($livre->getPhotoUrl()); ?>" alt="<?= htmlspecialchars($livre->getTitre()); ?>" class="flex-wrap h-48">
 
     <div class="p-4 flex flex-col justify-between flex-grow">
-        <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre['titre']) ?></h2>
-        <h3 class="mt-2">Description:</h3>
+        <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre->getTitre()) ?></h2>
+        <h3 class="mt-2">Description Courte:</h3>
        
-        <p class="text-gray-600 mt-2 flex-grow overflow-hidden"><?= htmlspecialchars($livre['description_courte']) ?></p>
-        <a href="./frontend/public/detail.php?id=<?= $livre['id'] ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">En savoir plus</a>
+        <p class="text-gray-600 mt-2 flex-grow overflow-hidden"><?= htmlspecialchars($livre->getDescription_courte()) ?></p>
+        <p class="text-gray-600 mt-2 flex-grow overflow-hidden"><?= htmlspecialchars($livre->getGenreNom()) ?></p>
+        <a href="./frontend/public/detail.php?id=<?= $livre->getId()  ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">En savoir plus</a>
     </div>
 </div>
 

@@ -1,16 +1,19 @@
-<?php 
-
-require_once '../db/connect_db.php';
+<?php
+require_once '../utils/autoload.php';
 session_start();
 
 
+$userRepo = new UserRepository();
 
 $id = $_POST['user_id'];
+$action = $_POST['action'];
 
 try {
-    $sql = "UPDATE users SET role_id = 2 WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([":id" => $id]);
+    if ($action === 'valider') {
+        $userRepo->validerVendeur($id);
+    } elseif ($action === 'refuser') {
+        $userRepo->refuserVendeur($id);
+    }
     header('Location: ../frontend/public/ajout.php?success=1');
 } catch (PDOException $e) {
     echo "Erreur de base de données : " . $e->getMessage();

@@ -4,6 +4,7 @@ module.exports = {
     './frontend/**/*.{php,js}',
     './public/*.{php,js,html}',
     './index.php',
+    './frontend/public/*.php'
   ],
   theme: {
     extend: {

@@ -26,19 +26,19 @@
     <main class="container mx-auto p-8 mt-8">
     <?php
 session_start();
-require_once '../../db/connect_db.php'; // Connexion à la base de données
+require_once '../../db/connect_db.php'; 
 
-// Vérifiez si l'utilisateur est connecté et a le rôle administrateur
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 1) {
-    header("Location: ./connexion.php"); // Redirige vers la page de connexion si l'utilisateur n'est pas un administrateur
+    header("Location: ./connexion.php"); 
     exit();
 }
 
-// Récupérer les utilisateurs de la base de données
-$sql = "SELECT id, user_nom, user_email FROM users"; // Remplacez 'users' par le nom réel de votre table
+
+$sql = "SELECT id, user_nom, user_email FROM users"; 
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les utilisateurs dans un tableau
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
 
         <section class="bg-white p-6 rounded-lg shadow-lg mb-8">

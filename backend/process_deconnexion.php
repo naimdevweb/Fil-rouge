@@ -4,7 +4,7 @@
 
 session_start();
 
-// Supprimer toutes les variables de session
+
 session_unset();
 
 

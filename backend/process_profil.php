@@ -1,74 +1,54 @@
 <?php
 session_start();
-require_once '../db/connect_db.php';  
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo_url'])) {
-
-   
-    $id_seller = $_SESSION['user_id']; 
-    $titre = $_POST['titre']; 
-    $description_courte = $_POST['description_courte']; 
-    $description_longue = $_POST['description_longue']; 
-    $prix = $_POST['prix']; 
-    $etat = $_POST['etat']; 
-    $genre = $_POST['genre_id']; 
-    $photo = $_FILES['photo_url']; 
+require_once '../utils/autoload.php';
 
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
     
+    $bookRepo = new BookRepository();
+    // var_dump($_SESSION);
+    // die();
+    $id_seller = $_SESSION['user_id'];
+    
+    $titre = $_POST['titre'];
+    $description_courte = $_POST['description_courte'];
+    $description_longue = $_POST['description_longue'];
+    $prix = $_POST['prix'];
+    $etat = $_POST['etat'];
+    $genre = $_POST['genre_id'];
+    $photo = $_FILES['photo'];
+
     // Vérifier si l'image a bien été téléchargée
     if ($photo['error'] === UPLOAD_ERR_OK) {
-        
         // Dossier de téléchargement
-        $uploadDir = '../assets/images/'; 
-        $fileName = uniqid() . basename($photo['name']); 
-        $uploadPath = $uploadDir . $fileName; 
-        
+        $uploadDir = '../assets/images/';
+        $fileName = uniqid() . basename($photo['name']);
+        $uploadPath = $uploadDir . $fileName;
+
         // Déplacer le fichier dans le dossier de destination
         if (move_uploaded_file($photo['tmp_name'], $uploadPath)) {
-            $url_photo = $uploadPath; // URL de l'image
+            $url_photo = $fileName; // Nom du fichier image
 
             try {
-                
-                $sql = "INSERT INTO livre (id_seller, titre, description_courte, description_longue, prix, etat_id, genre_id, photo_url) 
-                  VALUES (:id_seller, :titre, :description_courte, :description_longue, :prix, :etat_id, :genre_id, :photo_url)";
-                
-                $stmt = $pdo->prepare($sql);
-                $stmt->bindParam(':id_seller', $id_seller, PDO::PARAM_INT); 
-                $stmt->bindParam(':titre', $titre, PDO::PARAM_STR);
-                $stmt->bindParam(':description_courte', $description_courte, PDO::PARAM_STR);
-                $stmt->bindParam(':description_longue', $description_longue, PDO::PARAM_STR);
-                $stmt->bindParam(':prix', $prix, PDO::PARAM_INT);
-                $stmt->bindParam(':etat_id', $etat, PDO::PARAM_INT);
-                $stmt->bindParam(':genre_id', $genre, PDO::PARAM_INT);
-                $stmt->bindParam(':photo_url', $url_photo, PDO::PARAM_STR);
+                // Insérer le livre dans la base de données
+                $bookRepo->insertBook($id_seller, $titre, $description_courte, $description_longue, $prix, $etat, $genre, $url_photo);
 
-
-               
-
-                // Exécuter la requête d'insertion
-                if ($stmt->execute()) {
-                    $_SESSION['success_message'] = "Livre ajouté avec succès.";
-                } else {
-                    $_SESSION['error_message'] = "Erreur lors de l'ajout du livre.";
-                }
-            } catch (PDOException $e) {
-                $_SESSION['error_message'] = "Erreur de base de données : " . $e->getMessage();
+                // Rediriger vers la page de profil après l'ajout
+                $_SESSION['success_message'] = "Le livre a été ajouté avec succès.";
+                header("Location: ../frontend/public/profil.php");
+                exit();
+            } catch (Exception $e) {
+                $_SESSION['error_message'] = "Erreur lors de l'ajout du livre : " . $e->getMessage();
             }
         } else {
             $_SESSION['error_message'] = "Erreur lors du téléchargement de l'image.";
         }
     } else {
-        $_SESSION['error_message'] = "Erreur d'upload d'image.";
+        $_SESSION['error_message'] = "Erreur lors du téléchargement de l'image.";
     }
+} else {
+    $_SESSION['error_message'] = "Données invalides.";
+    header("Location: ../frontend/public/profil.php");
+    exit();
 }
-    
-    // Redirection après l'ajout
-    header('Location: ../frontend/public/profil.php');
-    exit;
-
-
-
-
-
-    
+?>
