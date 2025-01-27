@@ -50,8 +50,8 @@
                 <div class="mb-4">
                     <label for="role" class="block text-sm font-medium text-gray-700 ">Rôle</label>
                     <select name="role" id="role" class="mt-1 block w-full border border-gray-600" required>
-                        <option value="2">Vendeur</option>
                         <option value="3">Utilisateur</option>
+                        <option value="2">Vendeur</option>
                     </select>
                 </div>
                 <div class="mb-4" id="entreprise-info" style="display: none;">

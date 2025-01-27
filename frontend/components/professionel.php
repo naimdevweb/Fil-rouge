@@ -104,7 +104,7 @@
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getPrix()); ?> €</p>
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getEtat()); ?></p>
                     <p class="text-gray-800 font-bold mt-2"><?= htmlspecialchars($livre->getGenre()); ?></p>
-                    <form action="../../backend/delete_book.php" method="POST" class="mt-4">
+                    <form action="../../backend/process_delete.php" method="POST" class="mt-4">
                         <input type="hidden" name="book_id" value="<?= htmlspecialchars($livre->getId()); ?>">
                         <button type="submit" class="bg-red-500 text-black px-4 py-2 rounded">Supprimer</button>
                     </form>

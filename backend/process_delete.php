@@ -1,12 +1,9 @@
 <?php
-session_start();
 require_once '../utils/autoload.php';
-
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
-  
     $bookRepo = new BookRepository();
-
     $book_id = $_POST['book_id'];
 
     try {
@@ -15,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
 
         if ($book) {
             // Supprimer le fichier image associé
-            $file_path = $book['photo_url'];
+            $file_path = '../../images/' . $book->getPhotoUrl();
             if (file_exists($file_path)) {
                 unlink($file_path);
             }
@@ -33,9 +30,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
 
     header("Location: ../frontend/public/profil.php");
     exit();
-} else {
-    $_SESSION['erreur_message'] = "Données invalides.";
-    header("Location: ../frontend/public/profil.php");
-    exit();
 }
-?>

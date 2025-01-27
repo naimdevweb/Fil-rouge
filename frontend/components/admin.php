@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,6 +19,7 @@
         </nav>
     </div>
 </header>
+
 <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Utilisateurs</h2>
     <div class="overflow-x-auto">
@@ -34,25 +36,27 @@
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                <tr class="border-b">
-                    <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getNom()) ?></td>
-                    <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getPrenom()) ?></td>
-                    <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getEmail()) ?></td>
-                    <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getTel()) ?></td>
-                    <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getRoleId()) ?></td>
-                    <td class="p-3 text-gray-800">
-                        <form action="../../backend/process_delete_users.php" method="POST" style="display: inline;">
-                            <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
-                            <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
+                    <?php $roleName = $userRepo->getRoleNameById($user->getRoleId()); ?>
+                    <tr class="border-b">
+                        <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getNom()) ?></td>
+                        <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getPrenom()) ?></td>
+                        <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getEmail()) ?></td>
+                        <td class="p-3 text-gray-800"><?= htmlspecialchars($user->getTel()) ?></td>
+                        <td class="p-3 text-gray-800"><?= htmlspecialchars($roleName) ?></td>
+                        <td class="p-3 text-gray-800">
+                            <form action="../../backend/process_delete_users.php" method="POST" style="display: inline;">
+                                <input type="hidden" name="user_id" value="<?= $user->getId() ?>">
+                                <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </section>
-<section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+
+
     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Livres</h2>
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-200 rounded-lg">

@@ -2,7 +2,6 @@
 require_once '../utils/autoload.php';
 session_start();
 
-
 $userRepo = new UserRepository();
 
 $id = $_POST['user_id'];
@@ -13,6 +12,7 @@ try {
         $userRepo->validerVendeur($id);
     } elseif ($action === 'refuser') {
         $userRepo->refuserVendeur($id);
+        $userRepo->updateUserRole($id,3);
     }
     header('Location: ../frontend/public/ajout.php?success=1');
 } catch (PDOException $e) {

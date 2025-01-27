@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
     $titre = $_POST['titre'];
     $description_courte = $_POST['description_courte'];
     $description_longue = $_POST['description_longue'];
-    $prix = $_POST['prix'];
+    $prix = str_replace(',', '.', $_POST['prix']); 
     $etat = $_POST['etat'];
     $genre = $_POST['genre_id'];
     $photo = $_FILES['photo'];
