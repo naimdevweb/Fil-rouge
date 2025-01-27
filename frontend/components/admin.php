@@ -14,6 +14,7 @@
         <nav>
             <a href="" class="px-4 hover:underline">Tableau de Bord</a>
             <a href="../../backend/process_deconnexion.php" class="px-4 hover:underline">Déconnexion</a>
+            <a href="../public/ajout.php" class="px-4 hover:underline">Demande d'ajouts</a>
         </nav>
     </div>
 </header>

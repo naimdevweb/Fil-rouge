@@ -6,7 +6,7 @@ class BookRepository{
         $this->db = Database::getInstance(); 
         }
         public function getBooks(): array {
-            $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS seller_prenom, etat.nom AS etat, genre.nom AS genre
+            $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS user_prenom, etat AS etat, genre.nom_genre AS genre, livre.id_seller
                     FROM livre
                     INNER JOIN users ON livre.id_seller = users.id
                     INNER JOIN etat ON livre.etat_id = etat.id
@@ -43,14 +43,14 @@ class BookRepository{
             // Récupérer l'ID du livre inséré
             $book_id = $this->db->lastInsertId();
     
-    
-             // Récupérer les informations du livre inséré
-        $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS seller_prenom, etat AS etat, genre.nom AS nom_genre
-        FROM livre
-        INNER JOIN users ON livre.id_seller = users.id
-        INNER JOIN etat ON livre.etat_id = etat.id
-        INNER JOIN genre ON livre.genre_id = genre.id
-        WHERE livre.id = :book_id";
+
+// Récupérer les informations du livre inséré
+$sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS user_prenom, etat AS etat, genre.nom_genre AS genre, livre.id_seller
+FROM livre
+INNER JOIN users ON livre.id_seller = users.id
+INNER JOIN etat ON livre.etat_id = etat.id
+INNER JOIN genre ON livre.genre_id = genre.id
+WHERE livre.id = :book_id";
 $stmt = $this->db->prepare($sql);
 $stmt->execute([':book_id' => $book_id]);
 $bookData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -59,67 +59,67 @@ $bookData = $stmt->fetch(PDO::FETCH_ASSOC);
 return BookMapper::mapToObject($bookData);
 }
 
-
       
-        public function getBookById($id): ?Book {
-            $sql = "SELECT l.id, l.photo_url, l.titre, l.description_courte, l.description_longue, l.prix, l.id_seller, l.etat_id, e.etat, g.nom_genre AS genre_nom
-                    FROM livre l
-                    JOIN etat e ON l.etat_id = e.id
-                    JOIN genre g ON l.genre_id = g.id
-                    WHERE l.id = :id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $livreData = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-            if (!$livreData) {
-                return null;
-            }
-    
-            return BookMapper::mapToObject($livreData);
-        }
-    
+public function getBookById($id): ?Book {
+    $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS user_prenom, etat AS etat, genre.nom_genre AS genre, livre.id_seller
+            FROM livre
+            INNER JOIN users ON livre.id_seller = users.id
+            INNER JOIN etat ON livre.etat_id = etat.id
+            INNER JOIN genre ON livre.genre_id = genre.id
+            WHERE livre.id = :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $bookData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    
-
-        public function getAssociatedBooks($id): array {
-            $sql = "SELECT l.id, l.photo_url, l.titre, l.description_courte, l.description_longue, l.prix, l.id_seller, l.etat_id, e.etat, g.nom_genre AS genre_nom
-                    FROM livre l
-                    JOIN etat e ON l.etat_id = e.id
-                    JOIN genre g ON l.genre_id = g.id
-                    WHERE l.id != :id";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $livreData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-            $livresAssocies = [];
-            foreach ($livreData as $data) {
-                $livresAssocies[] = BookMapper::mapToObject($data);
-            }
-            return $livresAssocies;
-        }
+    if ($bookData) {
+        return BookMapper::mapToObject($bookData);
+    } else {
+        return null;
+    }
+}
 
 
-        public function getBooksBySellerId($id_seller): array {
-            $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS seller_prenom, etat AS etat, nom_genre AS nom_genre
-                    FROM livre
-                    INNER JOIN users ON livre.id_seller = users.id
-                    INNER JOIN etat ON livre.etat_id = etat.id
-                    INNER JOIN genre ON livre.genre_id = genre.id
-                    WHERE livre.id_seller = :id_seller";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([':id_seller' => $id_seller]);
-            $bookData = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-            $books = [];
-            foreach ($bookData as $data) {
-                $books[] = BookMapper::mapToObject($data);
-            }
-    
-            return $books; // Tableau d'objets Book
-        }
-    
+
+public function getAssociatedBooks($id): array {
+    $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS user_prenom, etat AS etat, genre.nom_genre AS genre, livre.id_seller
+            FROM livre
+            INNER JOIN users ON livre.id_seller = users.id
+            INNER JOIN etat ON livre.etat_id = etat.id
+            INNER JOIN genre ON livre.genre_id = genre.id
+            WHERE livre.id != :id";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id' => $id]);
+    $bookData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $books = [];
+    foreach ($bookData as $data) {
+        $books[] = BookMapper::mapToObject($data);
+    }
+
+    return $books; // Tableau d'objets Book
+}
+
+
+public function getBooksBySellerId($id_seller): array {
+    $sql = "SELECT livre.id, livre.titre, livre.description_courte, livre.description_longue, livre.prix, livre.photo_url, users.user_nom AS seller_nom, users.user_prenom AS user_prenom, etat AS etat, genre.nom_genre AS genre, livre.id_seller
+            FROM livre
+            INNER JOIN users ON livre.id_seller = users.id
+            INNER JOIN etat ON livre.etat_id = etat.id
+            INNER JOIN genre ON livre.genre_id = genre.id
+            WHERE livre.id_seller = :id_seller";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([':id_seller' => $id_seller]);
+    $bookData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $books = [];
+    foreach ($bookData as $data) {
+        $books[] = BookMapper::mapToObject($data);
+    }
+
+    return $books; // Tableau d'objets Book
+}
+
 
     public function deleteBook($book_id) {
         $sql = "DELETE FROM livre WHERE id = :book_id";

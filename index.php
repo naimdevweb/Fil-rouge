@@ -50,9 +50,18 @@ if (isset($_SESSION['user'])) {
         <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre->getTitre()) ?></h2>
         <h3 class="mt-2">Description Courte:</h3>
        
-        <p class="text-gray-600 mt-2 flex-grow overflow-hidden"><?= htmlspecialchars($livre->getDescription_courte()) ?></p>
-        <p class="text-gray-600 mt-2 flex-grow overflow-hidden"><?= htmlspecialchars($livre->getGenreNom()) ?></p>
-        <a href="./frontend/public/detail.php?id=<?= $livre->getId()  ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">En savoir plus</a>
+      
+        <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getDescriptionCourte()) ?></p>
+        
+        <h3 class="mt-2">Genre:</h3>
+      
+        <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getGenre()) ?></p>
+        
+        <h3 class="mt-2">Etat:</h3>
+
+        <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getEtat()); ?></p>
+        
+        <a href="./frontend/public/detail.php?id=<?= $livre->getId() ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">En savoir plus</a>
     </div>
 </div>
 
@@ -61,12 +70,3 @@ if (isset($_SESSION['user'])) {
         <p class="text-gray-600 text-center">Aucun livre disponible pour le moment.</p>
     <?php endif; ?>
 </section>
-
-</main>
-
-<footer class="pt-4">
-    <?php include('./frontend/components/footer.php'); ?>
-</footer>
-
-</body>
-</html>

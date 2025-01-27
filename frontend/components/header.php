@@ -24,7 +24,7 @@
         </div>
 
         <nav class="flex space-x-6">
-            <a href="../../public/profil.php" class="hover:text-red-600">Compte</a>
+            <a href="../public/profil.php" class="hover:text-red-600">Compte</a>
             <a href="/filtres" class="hover:text-gray-200">Filtres</a>
             <a href="../../index.php" class="hover:text-gray-200">Livres</a>
             <a href="#" class="hover:text-gray-200">Shop</a>

@@ -33,32 +33,32 @@
                 </div>
                 <div class="mb-4">
                     <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
-                    <input type="text" name="nom" id="nom" class="mt-1 block w-full" required>
+                    <input type="text" name="nom" id="nom" class="mt-1 block w-full border border-gray-600" required>
                 </div>
                 <div class="mb-4">
                     <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
-                    <input type="text" name="prenom" id="prenom" class="mt-1 block w-full" required>
+                    <input type="text" name="prenom" id="prenom" class="mt-1 block w-full border border-gray-600" required>
                 </div>
                 <div class="mb-4">
                     <label for="tel" class="block text-sm font-medium text-gray-700">Téléphone</label>
-                    <input type="tel" name="tel" id="tel" class="mt-1 block w-full" required>
+                    <input type="tel" name="tel" id="tel" class="mt-1 block w-full border border-gray-600" required>
                 </div>
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-                    <input type="password" name="password" id="password" class="mt-1 block w-full" required>
+                    <input type="password" name="password" id="password" class="mt-1 block w-full border border-gray-600" required>
                 </div>
                 <div class="mb-4">
-                    <label for="role" class="block text-sm font-medium text-gray-700">Rôle</label>
-                    <select name="role" id="role" class="mt-1 block w-full" required>
+                    <label for="role" class="block text-sm font-medium text-gray-700 ">Rôle</label>
+                    <select name="role" id="role" class="mt-1 block w-full border border-gray-600" required>
                         <option value="2">Vendeur</option>
                         <option value="3">Utilisateur</option>
                     </select>
                 </div>
                 <div class="mb-4" id="entreprise-info" style="display: none;">
                     <label for="adresse_entreprise" class="block text-sm font-medium text-gray-700">Adresse de l'entreprise</label>
-                    <input type="text" name="adresse_entreprise" id="adresse_entreprise" class="mt-1 block w-full">
+                    <input type="text" name="adresse_entreprise" id="adresse_entreprise" class="mt-1 block w-full border border-gray-600">
                     <label for="nom_entreprise" class="block text-sm font-medium text-gray-700">Nom de l'entreprise</label>
-                    <input type="text" name="nom_entreprise" id="nom_entreprise" class="mt-1 block w-full">
+                    <input type="text" name="nom_entreprise" id="nom_entreprise" class="mt-1 block w-full border border-gray-600">
                 </div>
                 <div class="flex items-center justify-between">
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">S'inscrire</button>

@@ -15,21 +15,12 @@ if (isset($_GET['id'])) {
         exit();
     }
 
-    $livres_associes = $bookRepo->getAssociatedBooks($id);
-
-    // Récupérer les livres du vendeur
-    if ($livre->getId_seller()) {
-        $books_by_seller = $bookRepo->getBooksBySellerId($livre->getId_seller());
-        $seller = $userRepo->getUserData($livre->getId_seller());
-        if ($seller) {
-            $seller_prenom = $seller->getPrenom();
-            // var_dump($seller_prenom);
-            // die();
-        } else {
-            $seller_prenom = "Inconnu";
-        }
+    // Récupérer les livres du même vendeur
+    $books_by_seller = $bookRepo->getBooksBySellerId($livre->getIdSeller());
+    $seller = $userRepo->getUserData($livre->getIdSeller());
+    if ($seller) {
+        $seller_prenom = $seller->getPrenom();
     } else {
-        $books_by_seller = [];
         $seller_prenom = "Inconnu";
     }
 } else {
@@ -62,41 +53,56 @@ if (isset($_GET['id'])) {
 
             <div class="w-1/2 p-4">
                 <h2 class="text-3xl font-semibold text-gray-800 mb-4"><?= htmlspecialchars($livre->getTitre()) ?></h2>
-                <p class="text-gray-600 mb-4"><?= htmlspecialchars($livre->getDescription_longue()) ?></p>
+
+                <h3 class="mt-2">description longue:</h3>
+                <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getDescriptionLongue()) ?></p>
+
+
+                <h3 class="mt-2">Genre:</h3>
+        
+                <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getGenre()) ?></p>
+
+                <h3 class="mt-2">Etat:</h3>
+
+                <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getEtat()); ?></p>
+        
                 <div class="flex items-center space-x-4">
-                    <span class="text-xl font-semibold text-gray-800">Prix :</span>
-                    <span class="text-xl font-bold text-green-600"><?= htmlspecialchars($livre->getPrix()) ?> €</span>
+                    <span class="text-xl font-semibold text-gray-800 mt-4">Prix :</span>
+                    <span class="text-xl font-bold text-green-600 mt-4"><?= htmlspecialchars($livre->getPrix()) ?> €</span>
                 </div>
                 <a href="#" class="mt-4 inline-block bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300">Acheter</a>
             </div>
         </section>
 
-        
-
-        <h1 class="text-xl font-semibold text-gray-800 text-center mt-8"><?= htmlspecialchars($seller_prenom); ?> vend aussi ces livres</h1>
+        <?php if (count($books_by_seller) > 1): ?>
+            <h1 class="text-xl font-semibold text-gray-800 text-center mt-8"><?= htmlspecialchars($seller_prenom); ?> vend aussi ces livres</h1>
+        <?php endif; ?>
 
         <section class="flex gap-10 pt-4 justify-center">
-            <?php if (count($livres_associes) > 0): ?>
-                <?php foreach ($livres_associes as $livre_associe): ?>
-                    <div class="max-w-xs bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img src="../../assets/images/<?= htmlspecialchars($livre_associe->getPhotoUrl()) ?>" alt="livre" class="w-full object-cover h-48">
-                        <div class="p-4">
-                            <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre_associe->getTitre()) ?></h2>
-                            <p class="text-gray-600 mt-2"><?= htmlspecialchars($livre_associe->getDescription_longue()) ?></p>
-                            <a href="detail.php?id=<?= $livre_associe->getId() ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">Voir les détails</a>
+            <?php if (count($books_by_seller) > 1): ?>
+                <?php foreach ($books_by_seller as $livre_associe): ?>
+                    <?php if ($livre_associe->getId() != $livre->getId()): // Exclure le livre actuel ?>
+                        <div class="max-w-xs bg-white rounded-lg shadow-lg overflow-hidden">
+                            <img src="../../assets/images/<?= htmlspecialchars($livre_associe->getPhotoUrl()) ?>" alt="livre" class="w-full object-cover h-48">
+                            <div class="p-4">
+                            
+                                <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre_associe->getTitre()) ?></h2>
+
+                                <h3 class="mt-2">description courte:</h3>
+                              
+                                <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getDescriptionLongue()) ?></p>
+                                
+                                <a href="detail.php?id=<?= $livre_associe->getId() ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">Voir les détails</a>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
+                <p class="text-gray-600 font-bold text-xl ">Aucun autre livre vendu par ce vendeur.</p>
             <?php endif; ?>
         </section>
 
-
-
-       
-
     </main>
-
 
     <footer class="pt-4">
         <?php include('../../frontend/components/footer.php'); ?>

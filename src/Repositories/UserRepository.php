@@ -38,6 +38,7 @@ class UserRepository {
     
         return UserMapper::mapToObject($userData);
     }
+
     
     public function getUserById($user_id) {
         $sql = "SELECT * FROM users WHERE id = :user_id";
@@ -50,18 +51,23 @@ class UserRepository {
    
 
 
-    public function updateUser($user_id, $nom, $prenom, $email, $tel) {
-        $sql_update = "UPDATE users SET user_nom = :user_nom, user_prenom = :user_prenom, user_email = :user_email, user_tel = :user_tel WHERE id = :id";
-        $stmt_update = $this->db->prepare($sql_update);
-        $stmt_update->execute([
-            ':user_nom' => $nom,
-            ':user_prenom' => $prenom,
-            ':user_email' => $email,
-            ':user_tel' => $tel,
+   public function updateUser($user_id, $user_nom, $user_prenom, $user_email, $user_tel, $user_password): bool {
+        $sql = "UPDATE users SET user_nom = :user_nom, user_prenom = :user_prenom, user_email = :user_email, user_tel = :user_tel, user_mdp = :user_mdp WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':user_nom' => $user_nom,
+            ':user_prenom' => $user_prenom,
+            ':user_email' => $user_email,
+            ':user_tel' => $user_tel,
+            ':user_mdp' => $user_password,
             ':id' => $user_id
         ]);
+
+        return $stmt->rowCount() > 0;
     }
 
+
+    
     public function updateUserPassword($user_id, $hashed_password) {
         $sql_update_password = "UPDATE users SET user_mdp = :user_mdp WHERE id = :id";
         $stmt_update_password = $this->db->prepare($sql_update_password);
@@ -113,22 +119,20 @@ class UserRepository {
 
 
     public function getVendeurs(): array {
-        $sql = "SELECT users.id AS user_id, users.user_nom, users.user_prenom, users.user_email, users.user_tel, vendeur.adresse_entreprise, vendeur.nom_entreprise
-                FROM users
-                INNER JOIN vendeur ON vendeur.user_id = users.id
-                WHERE users.role_id = 2";
+        $sql = "SELECT user_id, nom, prenom, nom_entreprise, adresse_entreprise FROM vendeur";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         $vendeurData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
         $vendeurs = [];
         foreach ($vendeurData as $data) {
+            // Ajoutez des messages de débogage
+            error_log("Données récupérées pour un vendeur: " . print_r($data, true));
             $vendeurs[] = VendeurMapper::mapToObject($data);
         }
-    
-        return $vendeurs; // Tableau d'objets Vendeur
+
+        return $vendeurs;
     }
-    
 
     public function validerVendeur($id) {
         $sql = "UPDATE users SET role_id = 2 WHERE id = :id"; 
