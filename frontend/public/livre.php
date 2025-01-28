@@ -16,6 +16,7 @@ $filteredBooks = isset($_SESSION['filtered_books']) ? $_SESSION['filtered_books'
     <title>Livres</title>
     <link rel="stylesheet" href="../../assets/css/output.css">
 </head>
+<?php include('../../frontend/components/header.php'); ?>
 <body class="bg-gray-100">
 
 <main class="max-w-7xl mx-auto p-8">

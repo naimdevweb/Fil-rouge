@@ -1,6 +1,4 @@
 <?php
-
-
 $bookRepo = new BookRepository();
 $genres = $bookRepo->getAllGenres();
 $etats = $bookRepo->getAllEtats();
@@ -11,22 +9,33 @@ $etats = $bookRepo->getAllEtats();
         <div class="text-2xl font-semibold">
             Bookery
         </div>
-        <div class="relative flex items-center w-1/2">
-            <input type="text" class="w-full p-2 pl-10 pr-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rechercher...">
+
+        <div class="relative w-full max-w-md mx-auto">
+            <form action="../../backend/process_search_bar.php" method="GET" class="w-full">
+                <div class="relative">
+                   
+                    <!-- Champ de recherche -->
+                    <input 
+                        type="text" 
+                        name="query" 
+                        class="w-full py-3 pl-12 pr-4 text-gray-700 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                        placeholder="Rechercher..." />
+                </div>
+            </form>
         </div>
 
         <nav class="flex space-x-6">
-            <a href="../public/profil.php" class="hover:text-red-600">Compte</a>
+            <a href="./profil.php" class="hover:text-red-600">Compte</a>
             <a href="#" class="hover:text-gray-200" id="filter-toggle">Filtres</a>
             <a href="../../index.php" class="hover:text-gray-200">Livres</a>
-            <a href="#" class="hover:text-gray-200">Shop</a>
+            <a href="../public/panier.php" class="hover:text-gray-200">Panier</a>
         </nav>
     </div>
 </header>
 
 <!-- Barre déroulante des filtres -->
 <div id="filter-bar" class="hidden bg-white shadow-lg rounded-lg p-4 mt-2">
-    <form action="./backend/process_filtres.php" method="GET">
+<form action="./backend/process_filtres.php" method="GET">
         <div class="mb-4">
             <label for="prix" class="block text-sm font-medium text-gray-700">Prix</label>
             <input type="text" name="prix" id="prix" class="mt-1 block w-full">

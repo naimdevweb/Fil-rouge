@@ -70,7 +70,7 @@ if (isset($_GET['id'])) {
                     <span class="text-xl font-semibold text-gray-800 mt-4">Prix :</span>
                     <span class="text-xl font-bold text-green-600 mt-4"><?= htmlspecialchars($livre->getPrix()) ?> €</span>
                 </div>
-                <a href="#" class="mt-4 inline-block bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition duration-300">Acheter</a>
+                <a href="../../backend/process_add_to_cart.php?livre_id=<?= $livre->getId() ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">Ajouter au panier</a>
             </div>
         </section>
 
