@@ -3,26 +3,22 @@
 require_once './utils/autoload.php'; 
 session_start();
 
-
 $bookRepo = new BookRepository();
 $livres = $bookRepo->getBooks();
 
-
 if (isset($_SESSION['user'])) {
-    $user_prenom = $_SESSION['user']->getPrenom();
-   
+    $user = $_SESSION['user'];
+    $user_prenom = $user->getPrenom();
 } else {
     $user_prenom = "Inconnu"; 
 }
-
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./assets/js/script.js"></script>
     <link rel="stylesheet" href="./assets/css/output.css">
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <title>Page d'Accueil</title>
@@ -31,7 +27,6 @@ if (isset($_SESSION['user'])) {
 
 <main>
 <?php
-$bookRepo = new BookRepository();
 $genres = $bookRepo->getAllGenres();
 $etats = $bookRepo->getAllEtats();
 ?>
@@ -45,7 +40,6 @@ $etats = $bookRepo->getAllEtats();
         <div class="relative w-full max-w-md mx-auto">
             <form action="../../backend/process_search_bar.php" method="GET" class="w-full">
                 <div class="relative">
-                   
                     <!-- Champ de recherche -->
                     <input 
                         type="text" 
@@ -67,7 +61,7 @@ $etats = $bookRepo->getAllEtats();
 
 <!-- Barre déroulante des filtres -->
 <div id="filter-bar" class="hidden bg-white shadow-lg rounded-lg p-4 mt-2">
-<form action="./backend/process_filtres.php" method="GET">
+    <form action="./backend/process_filtres.php" method="GET">
         <div class="mb-4">
             <label for="prix" class="block text-sm font-medium text-gray-700">Prix</label>
             <input type="text" name="prix" id="prix" class="mt-1 block w-full">
@@ -96,17 +90,6 @@ $etats = $bookRepo->getAllEtats();
     </form>
 </div>
 
-<script>
-document.getElementById('filter-toggle').addEventListener('click', function() {
-    var filterBar = document.getElementById('filter-bar');
-    if (filterBar.classList.contains('hidden')) {
-        filterBar.classList.remove('hidden');
-    } else {
-        filterBar.classList.add('hidden');
-    }
-});
-</script>
-
 <section>
     <img src="./assets/images/livre.jpg" alt="Livre" class="w-full h-auto max-h-80 object-cover">
 </section>
@@ -115,28 +98,49 @@ document.getElementById('filter-toggle').addEventListener('click', function() {
     <h1 class="text-xl font-semibold text-gray-800">Livres Disponibles</h1>
 </section>
 
-<section class="flex flex-wrap gap-10 pt-4 justify-center">
+<section class="flex flex-wrap gap-6 pt-4 justify-center">
     <?php if (count($livres) > 0): ?>
         <?php foreach ($livres as $livre): ?>
-            <div class="max-w-xs w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full">
-    
-            <img src="./assets/images/<?= htmlspecialchars($livre->getPhotoUrl()); ?>" alt="<?= htmlspecialchars($livre->getTitre()); ?>" class="flex-wrap h-full">
+            <div class="max-w-xs w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-[400px]">
+                <!-- Image avec affichage normal -->
+                <img src="./assets/images/<?= htmlspecialchars($livre->getPhotoUrl()); ?>" 
+                     alt="<?= htmlspecialchars($livre->getTitre()); ?>" 
+                     class="h-[200px] w-full object-contain">
 
-    <div class="p-4 flex flex-col justify-between flex-grow">
-        <h2 class="text-xl font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre->getTitre()) ?></h2>
-        <h3 class="mt-2">Description Courte:</h3>
-       
-      
-        <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded"><?= htmlspecialchars($livre->getDescriptionCourte()) ?></p>
-        
-       
-        
-        <a href="./frontend/public/detail.php?id=<?= $livre->getId() ?>" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">En savoir plus</a>
-    </div>
-</div>
+                     <!-- Contenu de la carte -->
+                     <div class="p-4 flex flex-col justify-between flex-grow">
+                         <h2 class="text-lg font-semibold text-gray-800 text-center"><?= htmlspecialchars($livre->getTitre()) ?></h2>
+                         
+                         <p class="text-gray-600 mt-2 flex-grow border border-gray-400 p-2 rounded text-sm line-clamp-3">
+                             <?= htmlspecialchars($livre->getDescriptionCourte()) ?>
+                            </p>
+                            
+                            <a href="./frontend/public/detail.php?id=<?= $livre->getId() ?>" 
+                                   class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">
+                                    En savoir plus
+                                </a>
+                    
+                </div>
+            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-gray-600 text-center">Aucun livre disponible pour le moment.</p>
+                <?php endif; ?>
+            </section>
+</main>
 
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p class="text-gray-600 text-center">Aucun livre disponible pour le moment.</p>
-    <?php endif; ?>
-</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('filter-toggle').addEventListener('click', function() {
+        var filterBar = document.getElementById('filter-bar');
+        if (filterBar.classList.contains('hidden')) {
+            filterBar.classList.remove('hidden');
+        } else {
+            filterBar.classList.add('hidden');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -2,13 +2,13 @@
 require_once '../utils/autoload.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['livre_id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['livre_id'])) {
     $bookRepo = new BookRepository();
     $acheteur_id = $_SESSION['user_id'];
-    $livre_id = isset($_GET['livre_id']);
+    $livre_id = intval($_POST['livre_id']);
 
     try {
-        
+      
         $bookRepo->deleteAchat($acheteur_id, $livre_id);
         $_SESSION['delete_message'] = "L'annonce a été supprimée du panier avec succès.";
     } catch (Exception $e) {

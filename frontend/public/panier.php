@@ -40,9 +40,10 @@ $panierItems = $bookRepo->getCartItems($acheteur_id);
                             <h3 class="text-xl font-semibold text-gray-800 mb-2 text-center"><?= htmlspecialchars($item->getTitre()); ?></h3>
                             <p class="text-gray-700 mb-2 font-bold">Prix: <?= htmlspecialchars($item->getPrix()); ?> €</p>
                             <a href="#" class="block mt-4 text-center text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">Acheter</a>
-                           <form action="../../backend/process_delete_achat.php">
-                            <a href="#" class="block mt-4 text-center text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition duration-300">Supprimer</a>
-                            </form>
+                            <form action="../../backend/process_delete_achat.php" method="POST" class="mt-4">
+    <input type="hidden" name="livre_id" value="<?= $item->getId() ?>">
+    <button type="submit" class="block w-full text-center text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition duration-300">Supprimer</button>
+</form>
                         </div>
                     </div>
                 <?php endforeach; ?>
