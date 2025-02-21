@@ -15,9 +15,9 @@ Plongez dans un univers littéraire où vous pouvez découvrir, acheter ou vendr
 
 ## 🛠️ Technologies utilisées
 
-- **Frontend** : HTML5, CSS3, JavaScript
-- **Backend** : [Préciser le framework ou langage utilisé, par ex. Node.js, Django, etc.]
-- **Base de données** : [Préciser le système de gestion de base de données, par ex. MySQL, PostgreSQL, etc.]
+- **Frontend** : HTML5, Taiwlindcss, JavaScript
+- **Backend** : [PHP(POO)]
+- **Base de données** : [MySQL]
 
 ## 🚀 Installation
 
